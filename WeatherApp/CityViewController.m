@@ -7,11 +7,11 @@
 //
 
 #import "CityViewController.h"
-
+#import "DetailController.h"
 
 @interface CityViewController ()
 
-@property (nonatomic) City *city;
+@property (nonatomic, retain) City *city;
 @property (nonatomic) UILabel *decriptionLabel;
 
 @end
@@ -24,23 +24,24 @@
     if(self)
     {
         _city = city;
-        self.title = city.cityName; //the title is applied to both the nav bar and the tab bar.
+        self.title = city.cityName; //the title is applied to both the nav bar and the tab bar!
         self.view.backgroundColor = [UIColor grayColor];
-        //Add funtions for view objects
-        [self createView];
     }
     return self;
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
-    //
+    NSString *weatherReport = [NSString stringWithFormat:@"City: %@ \nWeather: %@ \nTemperature: %d", self.city.cityName, self.city.weatherDescription, self.city.temperature];
+    [self viewText:weatherReport];
+    [self createButton];
 }
 
-- (void)createView {
+- (void)viewText:(NSString *)text
+{
     UILabel *descriptionLabel = [[UILabel alloc] init];
     descriptionLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    descriptionLabel.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:descriptionLabel];
     
     NSLayoutConstraint *labelCentreX = [NSLayoutConstraint constraintWithItem:descriptionLabel
@@ -79,14 +80,20 @@
     [self.view addConstraint:labelWidth];
     [self.view addConstraint:labelHeight];
     
-    descriptionLabel.text = [NSString stringWithFormat:@"%@", self.title];
-    
-    
+    descriptionLabel.numberOfLines = 4;
+    descriptionLabel.text = text;
 }
 
+- (void)createButton
+{
+    UIBarButtonItem *detailButton = [[UIBarButtonItem alloc] initWithTitle:@"Detail" style:UIBarButtonItemStylePlain target:self action:@selector(showDetails)];
+    self.navigationItem.rightBarButtonItem = detailButton;
+}
 
-
-
-
+- (void)showDetails
+{
+    DetailController *detailController = [[DetailController alloc] initWithCity:self.city];
+    [[self navigationController] pushViewController:detailController animated:YES];
+}
 
 @end

@@ -10,15 +10,12 @@
 
 @interface City ()
 
-@property (nonatomic) NSString *weatherDescription;
-@property (nonatomic) int temperature;
-
 @end
 
 
 @implementation City
 
-- (instancetype)initWithCityName:(NSString *)cityName weatherDescription:(NSString *)weather andTemperature:(int)temperature
+- (instancetype)initWithCityName:(NSString *)cityName weatherDescription:(NSString *)weather temperature:(int)temperature precipitation:(int)precipitation humidity:(int)humidity andWind:(int)wind
 {
     self = [super init];
     if(self)
@@ -26,6 +23,9 @@
         _cityName = cityName;
         _weatherDescription = weather;
         _temperature = temperature;
+        _precipitation = precipitation;
+        _humidity = humidity;
+        _wind = wind;
     }
     return self;
 }
